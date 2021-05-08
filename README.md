@@ -1,7 +1,7 @@
 # ios-youtube-dl
 I don't like paying $15 a month to listen to youtube videos with my phone locked 
 
-## Server side installation 
+## Server-Side installation 
 
 ```bash 
 apt install youtube-dl nginx 
@@ -14,5 +14,10 @@ mv bootleg-youtube-Premium/html/index.html /var/www/html/
 
 systemctl start nginx
 ```
+
+## iOS installation 
+
+You'll need to use the [shortcuts](https://apps.apple.com/us/app/shortcuts/id915249334) app for this. It has a feature that allows you
+to run scripts over ssh.      
 
 ![im1](imgs/img1.jpg)
