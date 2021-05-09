@@ -6,10 +6,15 @@ do
 done
 
 
-rm /var/www/html/movie.mp4
 
-echo "$url" >> history.txt
+echo "$url," >> history.txt
 
-youtube-dl -f mp4 $url -o /var/www/html/movie.mp4
+rm /var/www/html/*.mp4
+
+# save in movies directory with datetime 
+DATETIME=$(date +%F-%T)
+youtube-dl -f mp4 $url -o /var/www/html/movies/$DATETIME.mp4
+
+cp /var/www/html/movies/$DATETIME.mp4 /var/www/html/movie.mp4
 
 systemctl reload nginx

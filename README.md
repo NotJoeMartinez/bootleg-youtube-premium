@@ -4,13 +4,14 @@ I don't like paying $15 a month to listen to youtube videos with my phone locked
 ## Server-Side installation 
 
 ```bash 
-apt install youtube-dl nginx 
+apt install youtube-dl nginx php
 
 https://github.com/NotJoeMartinez/bootleg-youtube-Premium
 
 rm /var/www/html/*.html
+mkdir /var/www/html/movies/
 
-mv bootleg-youtube-Premium/html/index.html /var/www/html/
+mv bootleg-youtube-Premium/html/index.php /var/www/html/
 
 systemctl start nginx
 ```
