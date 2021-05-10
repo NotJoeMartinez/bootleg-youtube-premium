@@ -7,6 +7,7 @@ I don't like paying $15 a month to listen to youtube videos with my phone locked
 sudo apt install apache2 youtube-dl 
 git clone https://github.com/NotJoeMartinez/bootleg-youtube-premium
 cd bootleg-youtube-premium 
+chmod +x dl_script.py sync.sh
 pip3 install -r requirements.txt
 sudo mkdir /var/www/html/videos
 ```
