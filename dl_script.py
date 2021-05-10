@@ -14,8 +14,9 @@ def main():
     log_downloads(url, now)
     make_html(url,now)
     update_library()
+    remove_db_duplicates()
 
-    subprocess.run("./sync.sh", shell=True)
+    # subprocess.run("./sync.sh", shell=True)
     
 
 
@@ -107,6 +108,61 @@ def update_library():
     html_file.close()
 
 
+def remove_db_duplicates():
+    from collections import Counter
+    now = dt.datetime.now()
+    con = sqlite3.connect('history.db')
+    cur = con.cursor()
+    cur.execute(f'''select * from history''')
+    rows = cur.fetchall()
+
+    # finds duplicate ids
+    ids = [row[2] for row in rows]
+    counter_object = dict(Counter(ids))
+    duplicate_ids = [key for key in counter_object if counter_object[key] > 1]
+    
+
+    # if len(duplicate_ids) > 1:
+    for vid_id in duplicate_ids:
+
+        cur.execute(f''' select * from history WHERE id="{vid_id}"''')
+        foo = cur.fetchall()
+
+        # converts to string
+        time_stamps = [dt.datetime.strptime(foo[0], "%m_%d_%I:%M:%S%p") for foo in foo]
+
+
+        # finds most recent
+        try:
+            most_recent = max([dt for dt in time_stamps])
+
+            # converts most recent to string
+            mr = most_recent.strftime("%m_%d_%-I:%M:%S%p")
+
+            # print(mr, most_recent)
+            cur.execute(f''' DELETE FROM history WHERE id="{vid_id}" and date!="{mr}" ''')
+        except ValueError:
+            print(time_stamps)
+
+    con.commit()
+
+    cur.execute(f"select * from history")
+    uniq = cur.fetchall()
+
+    uniq_timestamps = [i[0] for i in uniq]
+    print(uniq_timestamps)
+
+    videos = os.listdir("webapp/videos")
+    print(videos)
+
+    for vid in videos:
+        if vid[:-4] not in uniq_timestamps:
+            os.remove(f"webapp/videos/{vid}")
+
+
+
+
+    con.close()
 
 
 if __name__ == '__main__':

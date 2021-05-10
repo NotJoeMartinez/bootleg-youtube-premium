@@ -9,3 +9,5 @@ test.py
 test.sh
 templates/pdf_interest_report.html
 webapp/*.html
+tests/
+.vscode
