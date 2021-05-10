@@ -20,7 +20,7 @@ def main():
 
 
 def download_video(url, now):
-    subprocess.run(f"youtube-dl -f mp4 {url} -o bootleg-youtube-premium/webapp/videos/{now}.mp4", shell=True)
+    subprocess.run(f"youtube-dl -f mp4 {url} -o webapp/videos/{now}.mp4", shell=True)
 
 
 def log_downloads(url, now):
