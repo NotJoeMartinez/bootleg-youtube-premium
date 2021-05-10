@@ -19,7 +19,6 @@ def main():
     
 
 
-
 def download_video(url, now):
     subprocess.run(f"youtube-dl -f mp4 {url} -o webapp/videos/{now}.mp4", shell=True)
 
@@ -100,7 +99,6 @@ def update_library():
     con.close()
 
     foo = [row for row in rows]
-    print(foo[1])
 
     outputText = template.render(foo=foo )
 
