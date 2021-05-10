@@ -1,0 +1,8 @@
+Jinja2==2.11.3
+MarkupSafe==1.1.1
+numpy==1.20.2
+pandas==1.2.4
+python-dateutil==2.8.1
+pytz==2021.1
+six==1.16.0
+youtube-dl==2021.4.26
