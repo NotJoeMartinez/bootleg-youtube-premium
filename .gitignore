@@ -3,4 +3,8 @@ env
 venv
 .VS_Code
 __pycashe__
-
+*.mp4
+*.db
+test.py
+test.sh
+templates/pdf_interest_report.html
