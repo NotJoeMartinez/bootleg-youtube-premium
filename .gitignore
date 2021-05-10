@@ -8,4 +8,4 @@ __pycashe__
 test.py
 test.sh
 templates/pdf_interest_report.html
-webapp/index.html
+webapp/*.html
