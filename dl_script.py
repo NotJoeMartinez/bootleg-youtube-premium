@@ -13,6 +13,7 @@ def main():
     download_video(url,now)
     log_downloads(url, now)
     make_html()
+    subprocess.run("./sync_script.sh", shell=True)
 
 
 
