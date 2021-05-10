@@ -4,16 +4,11 @@ I don't like paying $15 a month to listen to youtube videos with my phone locked
 ## Server-Side installation 
 
 ```bash 
-apt install youtube-dl nginx php
-
-https://github.com/NotJoeMartinez/bootleg-youtube-Premium
-
-rm /var/www/html/*.html
-mkdir /var/www/html/movies/
-
-mv bootleg-youtube-Premium/html/index.php /var/www/html/
-
-systemctl start nginx
+sudo apt install apache2 youtube-dl 
+git clone https://github.com/NotJoeMartinez/bootleg-youtube-premium
+cd bootleg-youtube-premium 
+pip3 install -r requirements.txt
+sudo mkdir /var/www/html/videos
 ```
 
 ## iOS installation 

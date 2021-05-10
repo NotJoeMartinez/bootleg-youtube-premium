@@ -1,3 +1,3 @@
-mv webapp/videos/*.mp4 /var/www/webapp/videos/
-mv webapp/index.html /var/www/webapp/
+mv webapp/videos/*.mp4 /var/www/html/videos/
+mv webapp/*.html /var/www/html/
 systemctl reload apache2
