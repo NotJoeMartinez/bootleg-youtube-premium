@@ -1,7 +1,7 @@
 # Bootleg-Youtube-Premium 
 I don't like paying $15 a month to listen to youtube videos with my phone locked. 
 `Bootleg-Youtube-Premium` integrates iOS shortcuts, a remote apache server and the python
-youtube-dl library to give you a "most" of the youtube premium features at a fraction of the
+youtube-dl library to give you "most" of the youtube premium features at a fraction of the
 price.
 
 ## Server-Side installation 
