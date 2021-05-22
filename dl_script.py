@@ -5,23 +5,29 @@ import subprocess
 import datetime as dt
 import jinja2
 from youtube_dl import YoutubeDL
+import threading
 
-def main():
+SERVER_IP = ''
+def main(server_ip=SERVER_IP):
     now = dt.datetime.now().strftime("%m_%d_%-I:%M:%S%p")
     url = sys.argv[1]
+    thread = threading.Thread(target=download_video(url,now))
+    thread.start()
 
-    download_video(url,now)
+    subprocess.run("rm webapp/videos/*.part > /dev/null 2>&1", shell=True)
+    # wait here for the result to be available before continuing
+    thread.join()
     log_downloads(url, now)
     make_html(url,now)
     update_library()
     remove_db_duplicates()
-
-    # subprocess.run("./sync.sh", shell=True)
+    subprocess.run("./sync.sh > /dev/null 2>&1", shell=True)
+    print(f"http://{server_ip}/videos/{now}.mp4")
     
 
 
 def download_video(url, now):
-    subprocess.run(f"youtube-dl -f mp4 {url} -o webapp/videos/{now}.mp4", shell=True)
+    subprocess.run(f"youtube-dl -q -f mp4 {url} -o ~/bootleg-youtube-premium/webapp/videos/{now}.mp4 > /dev/null 2>&1", shell=True)
 
 
 def log_downloads(url, now):
@@ -142,7 +148,7 @@ def remove_db_duplicates():
             # print(mr, most_recent)
             cur.execute(f''' DELETE FROM history WHERE id="{vid_id}" and date!="{mr}" ''')
         except ValueError:
-            print(time_stamps)
+            pass
 
     con.commit()
 
@@ -150,10 +156,10 @@ def remove_db_duplicates():
     uniq = cur.fetchall()
 
     uniq_timestamps = [i[0] for i in uniq]
-    print(uniq_timestamps)
+    # print(uniq_timestamps)
 
     videos = os.listdir("webapp/videos")
-    print(videos)
+    #print(videos)
 
     for vid in videos:
         if vid[:-4] not in uniq_timestamps:
