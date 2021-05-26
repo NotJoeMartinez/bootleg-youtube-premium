@@ -48,7 +48,7 @@ def add_to_db(now, url, id, title):
     cur.execute('''CREATE TABLE IF NOT EXISTS history 
                (date text, url text, id text, title text)''')
 
-    cur.execute(f'''INSERT INTO history VALUES ("{now}","{url}","{id}","{title}")''')
+    cur.execute('''INSERT INTO history VALUES (?, ?, ?, ?)''', (now, url, id, title))
     con.commit()
     con.close()
 
@@ -64,7 +64,7 @@ def make_html(url, now):
 
     con = sqlite3.connect('history.db')
     cur = con.cursor()
-    cur.execute(f'''select * from history WHERE url = '{url}' and date ='{now}';''')
+    cur.execute('''select * from history WHERE url =? and date = ? ''', (url, now))
     rows = cur.fetchall()
     con.close()
 
@@ -131,7 +131,7 @@ def remove_db_duplicates():
     # if len(duplicate_ids) > 1:
     for vid_id in duplicate_ids:
 
-        cur.execute(f''' select * from history WHERE id="{vid_id}"''')
+        cur.execute(''' select * from history WHERE id=?''', (vid_id,))
         foo = cur.fetchall()
 
         # converts to string
@@ -146,7 +146,7 @@ def remove_db_duplicates():
             mr = most_recent.strftime("%m_%d_%-I:%M:%S%p")
 
             # print(mr, most_recent)
-            cur.execute(f''' DELETE FROM history WHERE id="{vid_id}" and date!="{mr}" ''')
+            cur.execute(f''' DELETE FROM history WHERE id=? and date != ? ''', (vid_id, mr))
         except ValueError:
             pass
 
@@ -164,16 +164,7 @@ def remove_db_duplicates():
     for vid in videos:
         if vid[:-4] not in uniq_timestamps:
             os.remove(f"webapp/videos/{vid}")
-
-
-
-
     con.close()
-
 
 if __name__ == '__main__':
     main()
-
-
-
-
