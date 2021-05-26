@@ -9,14 +9,15 @@ import threading
 
 SERVER_IP = ''
 def main(server_ip=SERVER_IP):
-    now = dt.datetime.now().strftime("%m_%d_%-I:%M:%S%p")
     url = sys.argv[1]
+    now = dt.datetime.now().strftime("%m_%d_%-I:%M:%S%p")
     thread = threading.Thread(target=download_video(url,now))
     thread.start()
 
     subprocess.run("rm webapp/videos/*.part > /dev/null 2>&1", shell=True)
     # wait here for the result to be available before continuing
     thread.join()
+
     log_downloads(url, now)
     make_html(url,now)
     update_library()
