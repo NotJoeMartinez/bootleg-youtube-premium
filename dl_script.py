@@ -6,26 +6,30 @@ import threading
 import argparse
 
 
-def main():
+def main(parser, args):
 
-    SERVER_IP = get_server_ip()
+    if len(sys.argv) < 2:
+        parser.print_help()
+        exit(0)
 
-    url = sys.argv[1]
-    now = dt.datetime.now().strftime("%m_%d_%-I:%M:%S%p")
-    thread = threading.Thread(target=download_video(url,now))
-    thread.start()
+    if args.url:
+        SERVER_IP = get_server_ip()
+        url = args.url
+        now = dt.datetime.now().strftime("%m_%d_%-I:%M:%S%p")
+        thread = threading.Thread(target=download_video(url,now))
+        thread.start()
 
-    subprocess.run("rm webapp/videos/*.part > /dev/null 2>&1", shell=True)
-    # wait here for the result to be available before continuing
-    thread.join()
+        subprocess.run("rm webapp/videos/*.part > /dev/null 2>&1", shell=True)
+        # wait here for the result to be available before continuing
+        thread.join()
 
-    log_downloads(url, now)
-    make_html(url,now)
-    update_library()
-    remove_db_duplicates()
-    subprocess.run("./sync.sh > /dev/null 2>&1", shell=True)
-    print(f"http://{server_ip}/videos/{now}.mp4")
-    
+        log_downloads(url, now)
+        make_html(url,now)
+        update_library()
+        remove_db_duplicates()
+        subprocess.run("./sync.sh > /dev/null 2>&1", shell=True)
+        print(f"http://{SERVER_IP}/videos/{now}.mp4")
+        
 
 
 def download_video(url, now):
@@ -180,4 +184,8 @@ def get_server_ip():
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description="Bootleg Youtube Premium") 
+    parser.add_argument("-u", "--url", action="store", help="Insert URL")
+    args = parser.parse_args()
+    main(parser, args)
+
