@@ -1,14 +1,15 @@
-import sqlite3 
-import os
-import sys 
-import subprocess
+import sqlite3, os, sys, subprocess, uuid
 import datetime as dt
 import jinja2
 from youtube_dl import YoutubeDL
 import threading
+import argparse
 
-SERVER_IP = ''
-def main(server_ip=SERVER_IP):
+
+def main():
+
+    SERVER_IP = get_server_ip()
+
     url = sys.argv[1]
     now = dt.datetime.now().strftime("%m_%d_%-I:%M:%S%p")
     thread = threading.Thread(target=download_video(url,now))
@@ -166,6 +167,17 @@ def remove_db_duplicates():
         if vid[:-4] not in uniq_timestamps:
             os.remove(f"webapp/videos/{vid}")
     con.close()
+
+def get_server_ip():
+
+    fpath = f"/tmp/{str(uuid.uuid1())}_my_ip.txt"
+    subprocess.run(f"curl ip.me >> {fpath}", shell=True)
+    with open(fpath, "r") as f:
+        ip = f.readline()
+    os.remove(fpath)
+
+    return ip.strip() 
+
 
 if __name__ == '__main__':
     main()
