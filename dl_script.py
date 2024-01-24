@@ -33,7 +33,7 @@ def main(parser, args):
 
 
 def download_video(url, now):
-    subprocess.run(f"youtube-dl -q -f mp4 {url} -o ~/bootleg-youtube-premium/webapp/videos/{now}.mp4 > /dev/null 2>&1", shell=True)
+    subprocess.run(f"yt-dlp -q -f mp4 {url} -o ~/bootleg-youtube-premium/webapp/videos/{now}.mp4 > /dev/null 2>&1", shell=True)
 
 
 def log_downloads(url, now):
