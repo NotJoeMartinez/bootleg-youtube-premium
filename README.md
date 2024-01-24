@@ -13,7 +13,11 @@ price.
 ## Server-Side installation 
 
 ```bash 
-sudo apt install apache2 youtube-dl 
+sudo apt install apache2 yt-dlp
+systemctl start apache2
+systemctl enable apache2
+ufw allow 80
+ufw allow 443
 git clone https://github.com/NotJoeMartinez/bootleg-youtube-premium
 cd bootleg-youtube-premium 
 chmod +x dl_script.py sync.sh
